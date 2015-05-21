@@ -23,7 +23,7 @@ If any of the above files are not found in the working directory, you will be gi
 
 The 'run_analysis.R' script is extensively commented to explain the actions of the script.
 
-On sucessful completion of the script '**tidy_data.txt**' will be written to the working directory.
+On sucessful completion of the script '**tidydata.txt**' will be written to the working directory.
 
 The data dictionary for the **tidy data** can be found in *codebook.md* file.
 

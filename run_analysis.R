@@ -110,5 +110,5 @@ gby2 <- final_working_data$subject  # used for group by
 # calculate the mean for all measurements and group by Activities and Subject
 tidy_data <- aggregate(x = df, by = list(activity = gby1, subject = gby2), FUN = "mean")
 ## Step 6 - Write the tidy_data to a text file
-write.table(tidy_data, file = "tidy_data.txt", row.names = FALSE)
-message("Tidy data is written to file 'tidy_data.txt'")
+write.table(tidy_data, file = "tidydata.txt", row.names = FALSE)
+message("Tidy data is written to file 'tidydata.txt'")
