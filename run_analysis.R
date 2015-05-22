@@ -3,7 +3,7 @@ cat("\f")  # clear the console
 # and the script will not run without it.  Give the the user the option to install
 # the package.
 cat("\f")  # clear the console
-if (length(grep("dplyr", installed.packages()[, 1])) == 0) {
+if (require("dplyr") == FALSE) {
     message("The required package 'dplyr' is not installed in your system!")
     message("To install the package, please type 'y'")
     message("if you type 'n', the script will stop")
@@ -58,10 +58,16 @@ convert_names <- function (var) {
     var <- gsub("\\(\\)", "", var)
 }
 cat("\f")  # clear the console
+# This function read large text files very fast compared to 'read.table'
+read_text_file <- function(file){
+    initial_lines <- read.table(file, nrows = 100)
+    classes<-sapply(initial_lines, class)
+    read_file <- read.table(file, colClasses=classes)
+}
 # Read all the required 'test' data files
 file <- check_file("X_test.txt")  # check the file is in the working directory
 message("Reading 'X_test.txt' file. Be patient....")
-X_test <- read.table(file)
+X_test <- read_text_file(file)
 file <- check_file("subject_test.txt")
 subject_test <- read.table(file)
 file <- check_file("y_test.txt")
@@ -72,7 +78,7 @@ test_data <- cbind(activity = activity_test$V1, subject = subject_test$V1, X_tes
 # Read all the required 'train' data files
 file <- check_file("X_train.txt")
 message("Reading 'X_train.txt' file. Be patient....")
-X_train <- read.table(file)
+X_train <- read_text_file(file)
 file <- check_file("subject_train.txt")
 subject_train <- read.table(file)
 file <- check_file("y_train.txt")
@@ -97,9 +103,11 @@ file <- check_file("activity_labels.txt")
 activity_labels <- read.table(file)
 # Assign descriptive names to the activities
 final_working_data$activity <- factor(final_working_data$activity, labels = activity_labels$V2)
+cat("\f")  # clear the console
 ## Appropriately labels the data set with descriptive variable names.  Name the
 ## other columns with meaningfull names. Use the names given in the 'features.txt'
 ## and expand the names to be more meaningful. 'covert_names' function does this.
+cat("\f")  # clear the console
 colnames(final_working_data)[3:ncol(final_working_data)] <- convert_names(required_column_names)
 ## From the data set in step 4, creates a second, independent tidy data set with the
 ## average of each variable for each activity and each subject.  df - data to
@@ -109,6 +117,7 @@ gby1 <- final_working_data$activity  # used for group by
 gby2 <- final_working_data$subject  # used for group by
 # calculate the mean for all measurements and group by Activities and Subject
 tidy_data <- aggregate(x = df, by = list(activity = gby1, subject = gby2), FUN = "mean")
+cat("\f")  # clear the console
 ## Step 6 - Write the tidy_data to a text file
 write.table(tidy_data, file = "tidydata.txt", row.names = FALSE)
 message("Tidy data is written to file 'tidydata.txt'")
